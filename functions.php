@@ -301,9 +301,13 @@ function require_login(): void
 
 function admin_login(string $username, string $password): bool
 {
-    $stmt = db()->prepare('SELECT * FROM admin_users WHERE username = :u LIMIT 1');
-    $stmt->execute([':u' => $username]);
-    $user = $stmt->fetch();
+    try {
+        $stmt = db()->prepare('SELECT * FROM admin_users WHERE username = :u LIMIT 1');
+        $stmt->execute([':u' => $username]);
+        $user = $stmt->fetch();
+    } catch (Throwable $e) {
+        return false;
+    }
     if ($user && password_verify($password, $user['password_hash'])) {
         session_regenerate_id(true);
         $_SESSION['admin_id']       = $user['id'];
@@ -349,24 +353,36 @@ function render_flash(): string
  * ================================================================= */
 function fetch_all(string $sql, array $params = []): array
 {
-    $stmt = db()->prepare($sql);
-    $stmt->execute($params);
-    return $stmt->fetchAll();
+    try {
+        $stmt = db()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    } catch (Throwable $e) {
+        return [];
+    }
 }
 
 function fetch_one(string $sql, array $params = []): ?array
 {
-    $stmt = db()->prepare($sql);
-    $stmt->execute($params);
-    $row = $stmt->fetch();
-    return $row ?: null;
+    try {
+        $stmt = db()->prepare($sql);
+        $stmt->execute($params);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    } catch (Throwable $e) {
+        return null;
+    }
 }
 
 function count_rows(string $table, string $where = '1', array $params = []): int
 {
-    $stmt = db()->prepare("SELECT COUNT(*) AS c FROM {$table} WHERE {$where}");
-    $stmt->execute($params);
-    return (int)($stmt->fetch()['c'] ?? 0);
+    try {
+        $stmt = db()->prepare("SELECT COUNT(*) AS c FROM {$table} WHERE {$where}");
+        $stmt->execute($params);
+        return (int)($stmt->fetch()['c'] ?? 0);
+    } catch (Throwable $e) {
+        return 0;
+    }
 }
 
 /* =================================================================
