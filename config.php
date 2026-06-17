@@ -12,9 +12,9 @@ declare(strict_types=1);
  | (install.php fills these in automatically during setup.)
  * ---------------------------------------------------------------- */
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'gym_website');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'dzujrhhgqx_asd');
+define('DB_USER', 'dzujrhhgqx_asd');
+define('DB_PASS', 'dzujrhhgqx_asd');
 define('DB_CHARSET', 'utf8mb4');
 
 /* ----------------------------------------------------------------
