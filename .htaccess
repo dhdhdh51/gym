@@ -1,6 +1,23 @@
 # =====================================================================
-# Rebrandable Gym Website - Apache configuration
+# Rebrandable Gym Website - Apache / LiteSpeed configuration
+# Compatible with shared hosting (cPanel, Plesk), VPS (Apache/Nginx)
 # =====================================================================
+
+# Ensure PHP files are processed (fixes "plain text" issue on some hosts)
+<IfModule mod_mime.c>
+    AddType application/x-httpd-php .php
+</IfModule>
+
+# Alternative PHP handler for CGI/FastCGI hosts (uncomment if above doesn't work)
+# AddHandler application/x-httpd-php .php
+# AddHandler application/x-httpd-php74 .php
+# AddHandler application/x-httpd-php80 .php
+# AddHandler application/x-httpd-php81 .php
+# AddHandler application/x-httpd-php82 .php
+# AddHandler application/x-httpd-php83 .php
+
+# Default document
+DirectoryIndex index.php index.html
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -10,12 +27,15 @@
     RewriteRule ^robots\.txt$ robots.php [L]
 </IfModule>
 
-# Default document
-DirectoryIndex index.php
-
-# Block access to sensitive files
-<FilesMatch "(^\.|database\.sql|config\.php~|install\.lock|composer\.(json|lock))">
-    Require all denied
+# Block access to sensitive files only (NOT folders)
+<FilesMatch "^(\..*|database\.sql|install\.lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
 # Basic caching for static assets

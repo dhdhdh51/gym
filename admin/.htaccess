@@ -1,0 +1,5 @@
+# Ensure PHP is processed in /admin/ directory
+<IfModule mod_mime.c>
+    AddType application/x-httpd-php .php
+</IfModule>
+DirectoryIndex login.php index.php
