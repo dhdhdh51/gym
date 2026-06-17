@@ -8,19 +8,14 @@
 declare(strict_types=1);
 
 /* ----------------------------------------------------------------
- | DATABASE CREDENTIALS
- | These are loaded from config.local.php when present (written by
- | install.php). You can also edit the fallback defaults below, or
- | hardcode credentials directly here for your server.
+ | DATABASE CREDENTIALS  --  EDIT THESE FOR YOUR SERVER
+ | (install.php fills these in automatically during setup.)
  * ---------------------------------------------------------------- */
-if (is_file(__DIR__ . '/config.local.php')) {
-    require __DIR__ . '/config.local.php';
-}
-if (!defined('DB_HOST'))    define('DB_HOST', '127.0.0.1');
-if (!defined('DB_NAME'))    define('DB_NAME', 'gym_website');
-if (!defined('DB_USER'))    define('DB_USER', 'root');
-if (!defined('DB_PASS'))    define('DB_PASS', '');
-if (!defined('DB_CHARSET')) define('DB_CHARSET', 'utf8mb4');
+define('DB_HOST', '127.0.0.1');
+define('DB_NAME', 'gym_website');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_CHARSET', 'utf8mb4');
 
 /* ----------------------------------------------------------------
  | SITE PATHS

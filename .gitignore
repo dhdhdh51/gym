@@ -8,6 +8,5 @@ uploads/*
 Thumbs.db
 *.log
 
-# Local config overrides written by install.php
-config.local.php
+# Installer lock file
 install.lock

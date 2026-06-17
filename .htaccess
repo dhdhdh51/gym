@@ -14,7 +14,7 @@
 DirectoryIndex index.php
 
 # Block access to sensitive files
-<FilesMatch "(^\.|database\.sql|config\.php~|config\.local\.php|install\.lock|composer\.(json|lock))">
+<FilesMatch "(^\.|database\.sql|config\.php~|install\.lock|composer\.(json|lock))">
     Require all denied
 </FilesMatch>
 

@@ -37,7 +37,7 @@ or fitness academy — everything is editable from the admin panel.
 5. Click **Run Installation**. The installer will:
    - import `database.sql` (schema + sample content),
    - create your admin account,
-   - write `config.local.php` with your DB credentials,
+   - write your DB credentials directly into `config.php`,
    - lock itself (`install.lock`).
 6. **Delete `install.php`** afterwards for security, then visit your site and log in at `/admin/login.php`.
 
@@ -48,7 +48,7 @@ or fitness academy — everything is editable from the admin panel.
    ```bash
    mysql -u YOUR_USER -p gym_website < database.sql
    ```
-3. Edit **`config.php`** (or create `config.local.php`) and set your credentials:
+3. Edit **`config.php`** and set your credentials:
    ```php
    define('DB_HOST', '127.0.0.1');
    define('DB_NAME', 'gym_website');
@@ -125,7 +125,7 @@ admin/
 
 - [ ] **Delete `install.php`** after a successful installation.
 - [ ] Change the default admin password (or set your own via the installer).
-- [ ] Confirm DB credentials in `config.local.php` / `config.php`.
+- [ ] Confirm DB credentials in `config.php`.
 - [ ] Ensure `uploads/` is writable but cannot execute scripts (handled by `uploads/.htaccess`).
 - [ ] Force HTTPS at the server / host level.
 - [ ] Keep `display_errors` off in production (already disabled in `config.php`).
