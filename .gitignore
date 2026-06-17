@@ -1,0 +1,12 @@
+# Ignore uploaded media (keep the folder + protective files)
+uploads/*
+!uploads/.htaccess
+!uploads/index.html
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+
+# Local config overrides (optional)
+config.local.php
