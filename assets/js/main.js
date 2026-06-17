@@ -8,20 +8,39 @@
   var toggle = document.getElementById('navToggle');
   var nav = document.getElementById('mainNav');
   if (toggle && nav) {
-    toggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('open');
-      toggle.classList.toggle('open', open);
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      document.body.style.overflow = open ? 'hidden' : '';
+    var closeNav = function () {
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+    var openNav = function () {
+      nav.classList.add('open');
+      toggle.classList.add('open');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    };
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (nav.classList.contains('open')) { closeNav(); } else { openNav(); }
     });
     // close on link click
     nav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        nav.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+      a.addEventListener('click', closeNav);
+    });
+    // close when tapping outside the open menu
+    document.addEventListener('click', function (e) {
+      if (nav.classList.contains('open') && !nav.contains(e.target) && e.target !== toggle) {
+        closeNav();
+      }
+    });
+    // close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closeNav(); }
+    });
+    // reset scroll-lock if resized up to desktop while menu was open
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 992) { closeNav(); }
     });
   }
 
