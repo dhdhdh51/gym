@@ -77,7 +77,24 @@ function db(): PDO
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
     } catch (PDOException $e) {
         http_response_code(500);
-        die('Database connection failed. Please check your configuration in config.php.');
+        // Show a styled error page instead of plain text
+        echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">';
+        echo '<title>Database Error</title>';
+        echo '<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0a0a0a;color:#f4f4f5;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}';
+        echo '.card{background:#161618;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:40px;max-width:520px;width:100%;text-align:center}';
+        echo 'h1{font-size:1.8rem;margin-bottom:12px;color:#e11d2a}p{color:#a1a1aa;margin-bottom:16px;line-height:1.6}';
+        echo 'code{background:#1a1a1d;padding:3px 8px;border-radius:6px;font-size:.85rem;color:#fca5a5}';
+        echo '.btn{display:inline-block;padding:12px 24px;background:#e11d2a;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px}</style></head>';
+        echo '<body><div class="card"><h1>Database Connection Failed</h1>';
+        echo '<p>The website cannot connect to the database. This usually means:</p>';
+        echo '<p style="text-align:left;color:#d4d4d8">';
+        echo '1. You have not run the installer yet<br>';
+        echo '2. Database credentials in <code>config.php</code> are incorrect<br>';
+        echo '3. MySQL/MariaDB service is not running</p>';
+        echo '<p>Run the installer to set up your database:</p>';
+        echo '<a class="btn" href="install.php">Run Installer</a>';
+        echo '</div></body></html>';
+        exit;
     }
     return $pdo;
 }

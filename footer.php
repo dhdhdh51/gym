@@ -75,7 +75,8 @@ $pageKeyForFooter = $page_key ?? 'home';
   </a>
 </div>
 
-<script src="<?php echo e(url('assets/js/main.js')); ?>" defer></script>
+<?php $__jsPath = (basename(dirname($_SERVER['SCRIPT_NAME'] ?? '/')) === 'admin') ? '../assets/js/main.js' : 'assets/js/main.js'; ?>
+<script src="<?php echo e($__jsPath); ?>" defer></script>
 <?php echo seo_footer_scripts($pageKeyForFooter); ?>
 </body>
 </html>

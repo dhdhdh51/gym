@@ -35,7 +35,11 @@ function nav_active(string $file, string $current): string
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo e(url('assets/css/style.css')); ?>">
+<?php
+// Use relative path for CSS — works on any hosting, any subdirectory, any protocol
+$__cssPath = (basename(dirname($_SERVER['SCRIPT_NAME'] ?? '/')) === 'admin') ? '../assets/css/style.css' : 'assets/css/style.css';
+?>
+<link rel="stylesheet" href="<?php echo e($__cssPath); ?>">
 <style>
 :root{
   --primary: <?php echo e($primary); ?>;
