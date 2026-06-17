@@ -91,7 +91,7 @@ function split_sql(string $sql): array
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && (!$alreadyInstalled || $forced)) {
-    $host   = post('db_host', '127.0.0.1');
+    $host   = post('db_host', 'localhost');
     $name   = post('db_name');
     $user   = post('db_user');
     $pass   = post('db_pass');
@@ -229,7 +229,7 @@ $baseUrl = $scheme . '://' . $hostName . ($dir ?: '');
     <form method="post" class="acard" action="install.php<?php echo $forced ? '?force=1' : ''; ?>">
       <h3 class="section-divider" style="margin-top:0">Database Connection</h3>
       <div class="form-grid">
-        <div class="fg"><label>Database Host</label><input type="text" name="db_host" value="<?php echo h(post('db_host', '127.0.0.1') ?: '127.0.0.1'); ?>"></div>
+        <div class="fg"><label>Database Host</label><input type="text" name="db_host" value="<?php echo h(post('db_host', 'localhost') ?: 'localhost'); ?>"></div>
         <div class="fg"><label>Database Name</label><input type="text" name="db_name" value="<?php echo h(post('db_name', 'gym_website') ?: 'gym_website'); ?>" required></div>
         <div class="fg"><label>Database Username</label><input type="text" name="db_user" value="<?php echo h(post('db_user')); ?>" required></div>
         <div class="fg"><label>Database Password</label><input type="text" name="db_pass" value="<?php echo h(post('db_pass')); ?>"></div>

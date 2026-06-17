@@ -11,7 +11,7 @@ declare(strict_types=1);
  | DATABASE CREDENTIALS  --  EDIT THESE FOR YOUR SERVER
  | (install.php fills these in automatically during setup.)
  * ---------------------------------------------------------------- */
-define('DB_HOST', '127.0.0.1');
+define('DB_HOST', 'localhost');
 define('DB_NAME', 'gym_website');
 define('DB_USER', 'root');
 define('DB_PASS', '');
