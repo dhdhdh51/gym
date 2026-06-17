@@ -23,40 +23,46 @@ or fitness academy — everything is editable from the admin panel.
 
 ## 🚀 Installation
 
-### 1. Requirements
+### Requirements
 - PHP 8.0 or higher (with `pdo_mysql` and `fileinfo` extensions)
 - MySQL 5.7+ / MariaDB 10.3+
 - Apache (recommended, `.htaccess` included) or Nginx
 
-### 2. Upload the files
-Upload the entire project to your web root (e.g. `public_html/`) on shared hosting,
-or your site directory on a VPS.
+### Option A — Automatic installer (recommended)
 
-### 3. Create the database
-1. Create a new MySQL database (e.g. `gym_website`).
-2. Import **`database.sql`** using phpMyAdmin, or from the command line:
+1. Upload the entire project to your web root (e.g. `public_html/`).
+2. Create a MySQL database (or have your credentials ready — the installer can create it for you on most setups).
+3. In your browser, open **`https://yourdomain.com/install.php`**.
+4. Enter your database credentials and choose an admin username/password.
+5. Click **Run Installation**. The installer will:
+   - import `database.sql` (schema + sample content),
+   - create your admin account,
+   - write `config.local.php` with your DB credentials,
+   - lock itself (`install.lock`).
+6. **Delete `install.php`** afterwards for security, then visit your site and log in at `/admin/login.php`.
+
+### Option B — Manual installation
+
+1. Upload the project to your web root.
+2. Create a MySQL database (e.g. `gym_website`) and import **`database.sql`**:
    ```bash
    mysql -u YOUR_USER -p gym_website < database.sql
    ```
+3. Edit **`config.php`** (or create `config.local.php`) and set your credentials:
+   ```php
+   define('DB_HOST', '127.0.0.1');
+   define('DB_NAME', 'gym_website');
+   define('DB_USER', 'your_db_user');
+   define('DB_PASS', 'your_db_password');
+   ```
+4. Make the `uploads/` directory writable:
+   ```bash
+   chmod -R 755 uploads
+   ```
+5. Visit the public site at `/` and the admin panel at `/admin/login.php`.
 
-### 4. Configure the connection
-Edit **`config.php`** and set your database credentials:
-```php
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'gym_website');
-define('DB_USER', 'your_db_user');
-define('DB_PASS', 'your_db_password');
-```
-
-### 5. Set folder permissions
-Make the `uploads/` directory writable (so the admin can upload images):
-```bash
-chmod -R 755 uploads
-```
-
-### 6. Visit your site
-- Public website: `https://yourdomain.com/`
-- Admin panel: `https://yourdomain.com/admin/login.php`
+> With manual installation, the default admin login is **admin / admin123** (see below).
+> The automatic installer lets you set your own admin credentials during setup.
 
 ---
 
@@ -117,8 +123,9 @@ admin/
 
 ## 🛡️ Production Checklist
 
-- [ ] Change the default admin password.
-- [ ] Set correct DB credentials in `config.php`.
+- [ ] **Delete `install.php`** after a successful installation.
+- [ ] Change the default admin password (or set your own via the installer).
+- [ ] Confirm DB credentials in `config.local.php` / `config.php`.
 - [ ] Ensure `uploads/` is writable but cannot execute scripts (handled by `uploads/.htaccess`).
 - [ ] Force HTTPS at the server / host level.
 - [ ] Keep `display_errors` off in production (already disabled in `config.php`).
