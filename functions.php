@@ -70,7 +70,7 @@ function get_seo(string $pageKey): array
  */
 function render_seo(string $pageKey, array $custom = []): string
 {
-    $seo = array_merge(get_seo($pageKey), array_filter($custom, fn($v) => $v !== null && $v !== ''));
+    $seo = array_merge(get_seo($pageKey), array_filter($custom, function($v) { return $v !== null && $v !== ''; }));
 
     $title       = $seo['meta_title']       ?? setting('default_meta_title', 'Premium Gym Website');
     $description = $seo['meta_description']  ?? setting('default_meta_description');
@@ -378,7 +378,7 @@ function features_to_list(?string $features): array
         return [];
     }
     $lines = preg_split('/\r\n|\r|\n/', $features);
-    return array_values(array_filter(array_map('trim', $lines), fn($l) => $l !== ''));
+    return array_values(array_filter(array_map('trim', $lines), function($l) { return $l !== ''; }));
 }
 
 function money(?string $value): string
