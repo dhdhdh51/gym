@@ -21,7 +21,15 @@ define('DB_CHARSET', 'utf8mb4');
  | SITE PATHS
  * ---------------------------------------------------------------- */
 // Auto-detect base URL. You may hardcode it for production, e.g. https://yourgym.com
-$__scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+// HTTPS detection is proxy-aware (Cloudflare / load balancers terminate TLS and
+// forward plain HTTP to PHP). Without this, asset links become http:// on an
+// https:// page and browsers block them as "mixed content" (unstyled site).
+$__https = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off')
+        || (strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https')
+        || (strtolower((string)($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '')) === 'on')
+        || (strtolower((string)($_SERVER['HTTP_FRONT_END_HTTPS'] ?? '')) === 'on')
+        || ((int)($_SERVER['SERVER_PORT'] ?? 80) === 443);
+$__scheme = $__https ? 'https' : 'http';
 $__host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $__dir    = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
 // If the script is inside /admin, strip it so SITE_URL always points to the web root.

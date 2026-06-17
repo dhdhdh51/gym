@@ -27,6 +27,9 @@ function nav_active(string $file, string $current): string
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php if (str_starts_with(SITE_URL, 'https')): ?>
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<?php endif; ?>
 <?php echo render_seo($page_key, $seo_custom); ?>
 <?php if ($favicon): ?><link rel="icon" href="<?php echo e($favicon); ?>"><?php endif; ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">

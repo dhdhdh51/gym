@@ -137,7 +137,12 @@ function seo_footer_scripts(string $pageKey): string
  * ================================================================= */
 function current_url(): string
 {
-    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $https = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off')
+          || (strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https')
+          || (strtolower((string)($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '')) === 'on')
+          || (strtolower((string)($_SERVER['HTTP_FRONT_END_HTTPS'] ?? '')) === 'on')
+          || ((int)($_SERVER['SERVER_PORT'] ?? 80) === 443);
+    $scheme = $https ? 'https' : 'http';
     $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $uri    = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
     return $scheme . '://' . $host . $uri;
