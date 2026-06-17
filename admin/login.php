@@ -2,19 +2,31 @@
 require_once __DIR__ . '/../config.php';
 
 if (is_logged_in()) {
-    header('Location: ' . url('admin/dashboard.php'));
+    header('Location: dashboard.php');
     exit;
 }
 
 $error = '';
+$db_ok = false;
+
+// Test DB connection
+try {
+    db();
+    $db_ok = true;
+} catch (Throwable $e) {
+    $db_ok = false;
+}
+
 if (is_post()) {
-    if (!verify_csrf()) {
+    if (!$db_ok) {
+        $error = 'Database is not connected. Please check config.php credentials or run install.php first.';
+    } elseif (!verify_csrf()) {
         $error = 'Session expired. Please try again.';
     } else {
         $u = input('username');
         $p = input('password');
         if (admin_login($u, $p)) {
-            header('Location: ' . url('admin/dashboard.php'));
+            header('Location: dashboard.php');
             exit;
         }
         $error = 'Invalid username or password.';
@@ -34,14 +46,17 @@ $brand = setting('brand_name', 'Gym Admin');
 </head>
 <body>
 <div class="login-page">
-  <form class="login-card" method="post" action="<?php echo e(url('admin/login.php')); ?>">
+  <form class="login-card" method="post" action="">
     <?php echo csrf_field(); ?>
     <div class="logo"><?php echo e($brand); ?></div>
     <p class="sub">Sign in to your admin dashboard</p>
+    <?php if (!$db_ok && !$error): ?>
+      <div class="alert alert-error">Database not connected. Check credentials in config.php or run <a href="../install.php" style="color:#fff;text-decoration:underline">install.php</a>.</div>
+    <?php endif; ?>
     <?php if ($error): ?><div class="alert alert-error"><?php echo e($error); ?></div><?php endif; ?>
     <div class="fg">
       <label>Username</label>
-      <input type="text" name="username" autofocus required>
+      <input type="text" name="username" value="admin" autofocus required>
     </div>
     <div class="fg">
       <label>Password</label>
