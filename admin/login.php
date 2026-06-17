@@ -30,7 +30,7 @@ $brand = setting('brand_name', 'Gym Admin');
 <title>Admin Login | <?php echo e($brand); ?></title>
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?php echo e(url('assets/css/admin.css')); ?>">
+<link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body>
 <div class="login-page">
